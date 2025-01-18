@@ -1,0 +1,29 @@
+---
+layout: post
+title:  Planning Algorithms
+permalink: /planning-algorithms/
+date:   2000-01-04
+image:  dijkstra.png
+tags:   [Planning]
+---
+## Planning Algorithms
+
+### Grid Planning
+
+#### Dijkstra Planning Algorithm
+
+<center><img src="/img/dijkstra.png" alt="Dijkstra" height="400" width="400"></center>
+<br>
+
+#### A* Planning Algorithm
+
+### Sampling-based Planning
+
+#### RRT Planning Algorithm
+<center><img src="/img/rrt.png" alt="RRT" height="400" width="400"></center>
+<br>
+
+#### PRM Planning Algorithm
+
+documentation coming soon
+
