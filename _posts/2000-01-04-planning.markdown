@@ -10,20 +10,19 @@ tags:   [Planning]
 
 ### Grid Planning
 
-#### Dijkstra Planning Algorithm
+##### Dijkstra Planning Algorithm
 
 <center><img src="/img/dijkstra.png" alt="Dijkstra" height="400" width="400"></center>
 <br>
 
-#### A* Planning Algorithm
+##### A* Planning Algorithm
 
 ### Sampling-based Planning
 
-#### RRT Planning Algorithm
+##### RRT Planning Algorithm
 <center><img src="/img/rrt.png" alt="RRT" height="400" width="400"></center>
 <br>
 
-#### PRM Planning Algorithm
+##### PRM Planning Algorithm
 
-documentation coming soon
-
+documentation coming soon. find github repo [here.](https://github.com/ashwathkart/planning-algorithms.git)

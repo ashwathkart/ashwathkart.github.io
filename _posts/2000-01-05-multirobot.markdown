@@ -3,9 +3,12 @@ layout: post
 title: Multirobot Warehouse Automation
 permalink: /multirobot/
 date:   2000-01-06
-image:  multirobot.png
+image:  multirobot.gif
 tags:   [Planning]
 ---
 ## Multi-Robot Systems
 
-documentation coming soon
+<center><img src="/img/multirobot.gif" alt="multirobot" height="218" width="400"></center>
+<br>
+
+documentation coming soon. here's the [github repo](https://github.com/ashwathkart/multirobot-warehouse.git)
