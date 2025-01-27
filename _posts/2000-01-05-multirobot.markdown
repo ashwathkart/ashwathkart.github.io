@@ -8,7 +8,7 @@ tags:   [Planning]
 ---
 ## Multi-Robot Systems
 
-<center><img src="/img/multirobot.gif" alt="multirobot" height="218" width="400"></center>
+<center><img src="/img/multirobot.gif" alt="multirobot" height="218" width="400" loop="infinite"></center>
 <br>
 
 documentation coming soon. here's the [github repo](https://github.com/ashwathkart/multirobot-warehouse.git)
