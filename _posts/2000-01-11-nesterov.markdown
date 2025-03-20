@@ -50,7 +50,7 @@ This lookahead step allows NAG to anticipate the future trajectory and make more
 For a detailed look at how the math behind NAG works, please check out this [paper](https://github.com/ashwathkart/nesterov/blob/master/docs/Nesterov_s_Accelerated_Gradient_Descent.pdf) detailing the method as well as the proof of the improved convergence rate.
 
 ### Implementation
-Let's now write a simple implementation to visualize the superiority of NAG over GD.
+Let's now write a simple implementation to visualize the superiority of NAG over GD. The full implementation can be found [here](https://github.com/ashwathkart/nesterov/blob/master/nesterov.py).
 
 Let's define the objective function, a rift function, similar to what you would encounter in tuning the parameters of a neural network based on the error term of the sigmoid neuron. The function can be defined as:
 
