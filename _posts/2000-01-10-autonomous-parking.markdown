@@ -9,6 +9,7 @@ tags:   [Autonomous Vehicles, Perception, Planning, Control]
 ## Implementation of an Autonomous Parking Functionality in a Self-Driving Car
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/xG1_ZaXZ-rI" frameborder="1" allowfullscreen></iframe>
+<br>
 
 Autonomous parking represents a crucial functionality in self-driving vehicles, combining elements of perception, planning, and control. This post details the development and implementation of an autonomous parking system that enables a fully fitted-out autonomous vehicle to detect empty parking spots and execute precise parking maneuvers. The challenge involved not just finding an empty spot, but also planning a feasible path to it, controlling the vehicle precisely along that path, and continuously updating the plan based on real-time perception data.
 
@@ -29,9 +30,7 @@ The algorithm takes as input:
 
 The algorithm outputs a series of waypoints:
 
-\[
-W = \{(x_i, y_i, \theta_i, v_i)\}_{i=1}^n
-\]
+$$ W = \{(x_i, y_i, \theta_i, v_i)\}_{i=1}^n $$
 
 Each waypoint tells the vehicle where to be, which direction to face, and how fast to move. Importantly, our planner also handles situations requiring three-point turns, much like a human driver would when the parking space is tight.
 
@@ -41,9 +40,7 @@ The control system utilizes Model Predictive Control (MPC), which optimizes vehi
 
 The MPC controller takes the planned path and optimizes the vehicle's movements by minimizing a cost function:
 
-\[
-\min_{u_t} \sum_{k=0}^{N} \left( \|x_k - x_{ref}\|_Q^2 + \|u_k\|_R^2 \right)
-\]
+$$\min_{u_t} \sum_{k=0}^{N} \left( \|x_k - x_{ref}\|_Q^2 + \|u_k\|_R^2 \right) $$
 
 This mathematical expression essentially balances two goals:
 1. Following the planned path as closely as possible
@@ -69,9 +66,7 @@ Once a parking spot is detected, we transform its location from the camera's per
 
 One of the most challenging aspects was handling the dynamic nature of parking. As the vehicle moves closer to the spot, its perception of the spot's exact location improves. We implemented a blend function to smoothly update the target position:
 
-\[
-goal_{new} = \alpha \cdot goal_{detected} + (1-\alpha) \cdot goal_{previous}
-\]
+$$ goal_{new} = \alpha \cdot goal_{detected} + (1-\alpha) \cdot goal_{previous} $$
 
 ### Results
 
