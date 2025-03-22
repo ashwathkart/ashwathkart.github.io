@@ -36,7 +36,7 @@ Each waypoint tells the vehicle where to be, which direction to face, and how fa
 
 ### Control module
 
-The control system utilizes Model Predictive Control (MPC), which optimizes vehicle inputs over a prediction horizon while respecting system constraints. 
+The control system utilizes Model Predictive Control (MPC), which works by optimizing system inputs over a prediction horizon while respecting system constraints. In this case, the controller optimizes steering angle and velocity commands while ensuring the vehicle stays within its physical limits and avoids obstacles. The prediction horizon was set to 2 seconds, divided into 20 timesteps, allowing the controller to anticipate and smoothly execute complex maneuvers like three-point turns. The MPC formulation also incorporates soft constraints on acceleration and jerk to ensure passenger comfort during parking operations.
 
 The MPC controller takes the planned path and optimizes the vehicle's movements by minimizing a cost function:
 
@@ -50,21 +50,79 @@ The controller continuously outputs steering angles and velocity adjustments, si
 
 ### Perception Module
 
-Simultaneously, we developed the perception module.
+The perception module was developed simutaneously with the other modules, anticipating the time required for each submodule - training and filtering.
 
-To begin with, we trained a YOLOv8 model to detect parking spots in real-time video feeds. The training process involved:
-1. Collecting diverse parking lot images under various conditions
-2. Carefully labeling empty and occupied spots
-3. Training the model to recognize not just the presence of spots, but their orientation as well
+#### Training
 
-The model achieved the following performance metrics:
-- 92% precision in detecting parking spots
-- 87% recall rate
-- 89% mean Average Precision at 0.5 IOU
+To begin with, a YOLOv8 model was trained to detect parking spots in real-time video feeds. The training process involved:
+1. Data collection :
+  Collecting diverse parking lot images under various conditions, such as low lighting, varying angles of viewing the parking spot, and more importantly, various different types of parking spots.
+2. Labelling :
+  Carefully labeling empty parking spots using tools like Makesense.ai and Roboflow to generate label files containing bounding box annotations in (x, y, w, h, r) format, where (x,y) represents the center coordinates, (w,h) the dimensions, and r the rotation angle of each box
+3. Training :
+  The model was trained with the following dataset split:
+  - Training set: 95%
+  - Validation set: 4% 
+  - Test set: 2%
 
-Once a parking spot is detected, we transform its location from the camera's perspective to the vehicle's reference frame, also known as the Ego Frame. 
+  The YOLOv8 OBB model was trained with various hyperparameters:
+  - Epochs: {50, 70, 80, 100}
+  - Batch sizes: {5, 7, 10} 
+  - Confidence threshold: 0.7
 
-One of the most challenging aspects was handling the dynamic nature of parking. As the vehicle moves closer to the spot, its perception of the spot's exact location improves. We implemented a blend function to smoothly update the target position:
+  The model achieved a mean Average Precision (mAP) of 92% and was validated on both single images and real-time video streams from webcam rosbag data.
+
+#### Filtering
+
+The bounding boxes detected by YOLOv8 were used to crop relevant regions from the camera feed for detailed analysis. This cropping step helped focus processing on just the potential parking spots while reducing computational overhead.
+
+For each cropped region, we applied the following filtering pipeline:
+
+1. Gradient filtering to enhance line features:
+   - Applied Sobel operators in both x and y directions
+   - Combined the gradients to obtain edge magnitude
+   - Enhanced contrast using histogram equalization
+
+2. Threshold-based line detection:
+   - Converted the gradient image to binary using adaptive thresholding
+   - Pixels above the brightness threshold were classified as potential line segments
+   - Connected components analysis helped identify continuous line segments
+
+3. Parking spot boundary extraction:
+   - Identified the two strongest parallel lines representing parking spot boundaries
+   - Verified line parallelism within acceptable angular tolerance
+   - Filtered out noise and irrelevant line segments
+
+4. Reference line computation:
+   - Calculated the perpendicular bisector between the boundary lines
+   - Found the midpoint of this reference line
+   - Computed the angle {\alpha} between the reference line and the y-axis
+
+This filtered output, consisting of the reference point coordinates $(x, y)$ and orientation angle $\alpha$, was then passed to the planning module for path generation. The filtering process proved robust across various lighting conditions and parking spot configurations, with an average processing time of 50ms per frame.
+
+### Frame transformation and module integration
+
+Finally, the different modules were integrated together after testing them separately.
+
+#### Transformation
+
+Once a parking spot is detected, the perception module's output is transformed from camera coordinates to real-world Cartesian coordinates through an iterative calibration process. The mapping between pixel coordinates $(x_p, y_p)$ on the image plane and their corresponding 3D world coordinates $(x_c, y_c, z_c)$ was established through a series of successive refinements:
+
+1. The intrinsic calibration was first performed using a checkerboard pattern, through which the camera's focal length, principal point, and lens distortion parameters were precisely determined, establishing the baseline intrinsic camera matrix.
+
+2. The initial transformation was then refined through extrinsic calibration, where images of known 3D reference points were captured and analyzed, yielding the preliminary rotation and translation between the camera frame and world frame.
+
+3. Further refinement was achieved through the Perspective-n-Point (PnP) algorithm, where the transformation matrix was iteratively optimized by minimizing the reprojection errors between the 2D image points and their corresponding 3D world coordinates.
+
+Through these successive refinements, the final transformation equation was derived:
+
+$$ \begin{bmatrix} x_c \\ y_c \\ z_c \\ 1 \end{bmatrix} = T_{ext} \cdot K^{-1} \begin{bmatrix} x_p \\ y_p \\ 1 \end{bmatrix} $$
+
+where $K$ represents the optimized intrinsic camera matrix and $T_ext$ is the refined extrinsic transformation matrix. Through this meticulously calibrated system, detected parking spot boundaries are projected from image space to the vehicle's reference frame with projection errors consistently maintained below 0.5 ft.
+
+#### Blend function
+
+One of the most challenging problems was handling the dynamic nature of parking. As the vehicle moves closer to the spot, its perception of the spot's exact location improves, and thus the output value is different. A blend function was implemented to solve this problem by smoothly updating the target position without regenerating a path from scratch.
 
 $$ goal_{new} = \alpha \cdot goal_{detected} + (1-\alpha) \cdot goal_{previous} $$
 
