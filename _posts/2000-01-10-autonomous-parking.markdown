@@ -13,19 +13,28 @@ tags:   [Autonomous Vehicles, Perception, Planning, Control]
 
 Autonomous parking represents a crucial functionality in self-driving vehicles, combining elements of perception, planning, and control. This post details the development and implementation of an autonomous parking system that enables a fully fitted-out autonomous vehicle to detect empty parking spots and execute precise parking maneuvers. The challenge involved not just finding an empty spot, but also planning a feasible path to it, controlling the vehicle precisely along that path, and continuously updating the plan based on real-time perception data.
 
-The project can be broadly split into the development of three major modules: planning, control, and perception. Let's look into how each module works and how they come together to create a robust autonomous parking system.
+The system architecture consists of three tightly integrated modules that work in harmony to achieve autonomous parking: planning, control, and perception. As shown in the diagram below, each module handles a specific aspect of the parking task while maintaining continuous communication with the others.
+
+<center><img src="/img/parking_diag.png" alt="Simple Function" width="700"></center>
+<br>
+
+Let's look into how each module works and how they come together to create a robust autonomous parking system.
 
 ### Path planning module
 
-The path planning module implements a Hybrid A* algorithm to generate feasible trajectories between the vehicle's current position and the target parking spot. Unlike traditional A* which operates in discrete space, Hybrid A* considers the vehicle's kinematic constraints while maintaining the computational efficiency of grid-based search.
+The path planning module implements a Hybrid A* algorithm to generate feasible trajectories between the vehicle's current position and the target parking spot. Unlike traditional A* which operates in discrete space, Hybrid A* algorithm explores the continuous configuration space while respecting vehicle constraints like turning radius and velocity limits.
 
-The algorithm takes as input:
-- Start state: $(x_s, y_s, \theta_s)$
-- Goal state: $(x_g, y_g, \theta_g)$
-- Vehicle parameters: 
-  - Dimensions $(l, w)$
-  - Minimum turn radius $R_{min}$
-  - Maximum acceleration $a_{max}$
+The video below demonstrates the algorithm finding and executing an optimal path from the start position to a detected parking spot:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/q4q9yAApT8I" frameborder="1" allowfullscreen></iframe>
+
+The planner takes as input:
+- Current vehicle state: $(x_s, y_s, \theta_s)$ 
+- Target parking spot: $(x_g, y_g, \theta_g)$
+- Vehicle constraints:
+  - Physical dimensions $(l, w)$
+  - Minimum turning radius $R_{min}$
+    - Maximum acceleration $a_{max}$ 
   - Maximum velocity $v_{max}$
 
 The algorithm outputs a series of waypoints:
@@ -37,6 +46,16 @@ Each waypoint tells the vehicle where to be, which direction to face, and how fa
 ### Control module
 
 The control system utilizes Model Predictive Control (MPC), which works by optimizing system inputs over a prediction horizon while respecting system constraints. In this case, the controller optimizes steering angle and velocity commands while ensuring the vehicle stays within its physical limits and avoids obstacles. The prediction horizon was set to 2 seconds, divided into 20 timesteps, allowing the controller to anticipate and smoothly execute complex maneuvers like three-point turns. The MPC formulation also incorporates soft constraints on acceleration and jerk to ensure passenger comfort during parking operations.
+
+One of the key challenges addressed in the control system was handling the dynamic nature of parking. As the vehicle moves closer to the spot, its perception of the spot's exact location improves, leading to varying target positions. Rather than regenerating the entire path each time the target position updates, we implemented a blend function that smoothly interpolates between the previous and newly detected goal positions:
+
+$$ goal_{new} = \alpha \cdot goal_{detected} + (1-\alpha) \cdot goal_{previous} $$
+
+This blending approach allows the controller to gracefully handle updates to the target position while maintaining smooth and stable vehicle motion throughout the parking maneuver.
+
+The video below illustrates how the controller adjusts the path in real-time to maintain smooth motion while following the planned trajectory as closely as possible, while also handling the dynamic nature of the target position, simulated in this case by a sine function randomly changing the target position.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rcOIEILTj5I" frameborder="1" allowfullscreen></iframe>
 
 The MPC controller takes the planned path and optimizes the vehicle's movements by minimizing a cost function:
 
@@ -70,7 +89,9 @@ To begin with, a YOLOv8 model was trained to detect parking spots in real-time v
   - Batch sizes: {5, 7, 10} 
   - Confidence threshold: 0.7
 
-  The model achieved a mean Average Precision (mAP) of 92% and was validated on both single images and real-time video streams from webcam rosbag data.
+  The model achieved a mean Average Precision (mAP) of 92% and was validated on both single images and real-time video streams from recorded rosbag data. The video below shows the model's performance on a live camera feed containing a single viable parking spot.
+
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/M1g1zNkn9b8" frameborder="1" allowfullscreen></iframe>
 
 #### Filtering
 
@@ -99,6 +120,11 @@ For each cropped region, we applied the following filtering pipeline:
    - Computed the angle {\alpha} between the reference line and the y-axis
 
 This filtered output, consisting of the reference point coordinates $(x, y)$ and orientation angle $\alpha$, was then passed to the planning module for path generation. The filtering process proved robust across various lighting conditions and parking spot configurations, with an average processing time of 50ms per frame.
+
+<center><img src="/img/filtering.png" alt="Simple Function" width="700"></center>
+<br>
+
+The image above shows the stages of the filtering pipeline, from the raw image, (a), to the thresholded binary image , (b), to the final filtered output, (c).
 
 ### Frame transformation and module integration
 
