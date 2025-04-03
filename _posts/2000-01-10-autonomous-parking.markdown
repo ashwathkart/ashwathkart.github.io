@@ -16,7 +16,6 @@ Autonomous parking represents a crucial functionality in self-driving vehicles, 
 The system architecture consists of three tightly integrated modules that work in harmony to achieve autonomous parking: planning, control, and perception. As shown in the diagram below, each module handles a specific aspect of the parking task while maintaining continuous communication with the others.
 
 <center><img src="/img/parking_diag.png" alt="Simple Function" width="700"></center>
-<br>
 
 Let's look into how each module works and how they come together to create a robust autonomous parking system.
 
@@ -27,6 +26,7 @@ The path planning module implements a Hybrid A* algorithm to generate feasible t
 The video below demonstrates the algorithm finding and executing an optimal path from the start position to a detected parking spot:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/q4q9yAApT8I" frameborder="1" allowfullscreen></iframe>
+<br>
 
 The planner takes as input:
 - Current vehicle state: $(x_s, y_s, \theta_s)$ 
@@ -56,6 +56,7 @@ This blending approach allows the controller to gracefully handle updates to the
 The video below illustrates how the controller adjusts the path in real-time to maintain smooth motion while following the planned trajectory as closely as possible, while also handling the dynamic nature of the target position, simulated in this case by a sine function randomly changing the target position.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/rcOIEILTj5I" frameborder="1" allowfullscreen></iframe>
+<br>
 
 The MPC controller takes the planned path and optimizes the vehicle's movements by minimizing a cost function:
 
@@ -92,6 +93,7 @@ To begin with, a YOLOv8 model was trained to detect parking spots in real-time v
   The model achieved a mean Average Precision (mAP) of 92% and was validated on both single images and real-time video streams from recorded rosbag data. The video below shows the model's performance on a live camera feed containing a single viable parking spot.
 
   <iframe width="560" height="315" src="https://www.youtube.com/embed/M1g1zNkn9b8" frameborder="1" allowfullscreen></iframe>
+  <br>
 
 #### Filtering
 
@@ -121,8 +123,7 @@ For each cropped region, we applied the following filtering pipeline:
 
 This filtered output, consisting of the reference point coordinates $(x, y)$ and orientation angle $\alpha$, was then passed to the planning module for path generation. The filtering process proved robust across various lighting conditions and parking spot configurations, with an average processing time of 50ms per frame.
 
-<center><img src="/img/filtering.png" alt="Simple Function" width="700"></center>
-<br>
+<center><img src="/img/filtering.png" alt="Filtering Pipeline" width="700"></center>
 
 The image above shows the stages of the filtering pipeline, from the raw image, (a), to the thresholded binary image , (b), to the final filtered output, (c).
 
