@@ -16,6 +16,7 @@ Autonomous parking represents a crucial functionality in self-driving vehicles, 
 The system architecture consists of three tightly integrated modules that work in harmony to achieve autonomous parking: planning, control, and perception. As shown in the diagram below, each module handles a specific aspect of the parking task while maintaining continuous communication with the others.
 
 <center><img src="/img/parking_diag.png" alt="Simple Function" width="700"></center>
+<br>
 
 Let's look into how each module works and how they come together to create a robust autonomous parking system.
 
@@ -124,7 +125,7 @@ For each cropped region, we applied the following filtering pipeline:
 This filtered output, consisting of the reference point coordinates $(x, y)$ and orientation angle $\alpha$, was then passed to the planning module for path generation. The filtering process proved robust across various lighting conditions and parking spot configurations, with an average processing time of 50ms per frame.
 
 <center><img src="/img/filtering.png" alt="Filtering Pipeline" width="700"></center>
-
+<br>
 The image above shows the stages of the filtering pipeline, from the raw image, (a), to the thresholded binary image , (b), to the final filtered output, (c).
 
 ### Frame transformation and module integration
