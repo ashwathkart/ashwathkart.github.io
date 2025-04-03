@@ -157,10 +157,10 @@ After extensive testing, validating and reconfiguring, our system achieved:
 
 ### Conclusion
 
-This project demonstrates the successful integration of modern robotics techniques for autonomous parking. The combination of Hybrid A* planning, MPC control, and deep learning-based perception creates a robust system capable of handling real-world parking scenarios.
+This project demonstrates the successful integration of several modern robotics techniques for the implementation of a autonomous parking system. The combination of Hybrid A* planning, MPC control, and deep learning-based perception creates a robust system capable of handling real-world parking scenarios.
 
 Future improvements could include:
-1. Implementation of particle filters for more robust state estimation
+1. Implementation of multi-sensor fusion for more robust state estimation
 2. Integration of uncertainty-aware planning
 3. Extension to more complex parking scenarios
 
