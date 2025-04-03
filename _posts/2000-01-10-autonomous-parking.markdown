@@ -127,7 +127,7 @@ This filtered output, consisting of the reference point coordinates $(x, y)$ and
 
 <center><img src="/img/filtering.png" alt="Filtering Pipeline" width="700"></center>
 <br>
-The image above shows the stages of the filtering pipeline, from the raw image, (a), to the thresholded binary image , (b), to the final filtered output, (c).
+The image above shows the stages of the filtering pipeline, where (a) is the raw image from the camera, (b) is the thresholded binary image and (c) being the final filtered output with the middle line annotated.
 
 ### Frame transformation and module integration
 
