@@ -13,18 +13,18 @@ tags:   [Autonomous Vehicles, Perception, Planning, Control]
 
 Autonomous parking represents a crucial functionality in self-driving vehicles, combining elements of perception, planning, and control. This post details the development and implementation of an autonomous parking system that enables a fully fitted-out autonomous vehicle to detect empty parking spots and execute precise parking maneuvers. The challenge involved not just finding an empty spot, but also planning a feasible path to it, controlling the vehicle precisely along that path, and continuously updating the plan based on real-time perception data.
 
-The system architecture consists of three tightly integrated modules that work in harmony to achieve autonomous parking: planning, control, and perception. As shown in the diagram below, each module handles a specific aspect of the parking task while maintaining continuous communication with the others.
+The system architecture consists of three tightly integrated modules that work in harmony to achieve autonomous parking: perception, planning and control. As shown in the diagram below, each module handles a specific aspect of the parking task while maintaining continuous communication with the others.
 
 <center><img src="/img/parking_diag.png" alt="Simple Function" width="700"></center>
 <br>
 
-Let's look into how each module works and how they come together to create a robust autonomous parking system.
+Let's now look at how each module was developed and how they all come together to create a robust autonomous parking system.
 
 ### Path planning module
 
 The path planning module implements a Hybrid A* algorithm to generate feasible trajectories between the vehicle's current position and the target parking spot. Unlike traditional A* which operates in discrete space, Hybrid A* algorithm explores the continuous configuration space while respecting vehicle constraints like turning radius and velocity limits.
 
-The video below demonstrates the algorithm finding and executing an optimal path from the start position to a detected parking spot:
+The video below demonstrates the algorithm finding an optimal path between defined start and goal positions, based on defined vehicle dynamics and obstacle positions.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/q4q9yAApT8I" frameborder="1" allowfullscreen></iframe>
 <br>
@@ -32,10 +32,11 @@ The video below demonstrates the algorithm finding and executing an optimal path
 The planner takes as input:
 - Current vehicle state: $(x_s, y_s, \theta_s)$ 
 - Target parking spot: $(x_g, y_g, \theta_g)$
+- Obstacle coordinates : $(x_o, y_o)$
 - Vehicle constraints:
   - Physical dimensions $(l, w)$
   - Minimum turning radius $R_{min}$
-    - Maximum acceleration $a_{max}$ 
+  - Maximum acceleration $a_{max}$ 
   - Maximum velocity $v_{max}$
 
 The algorithm outputs a series of waypoints:
@@ -46,18 +47,7 @@ Each waypoint tells the vehicle where to be, which direction to face, and how fa
 
 ### Control module
 
-The control system utilizes Model Predictive Control (MPC), which works by optimizing system inputs over a prediction horizon while respecting system constraints. In this case, the controller optimizes steering angle and velocity commands while ensuring the vehicle stays within its physical limits and avoids obstacles. The prediction horizon was set to 2 seconds, divided into 20 timesteps, allowing the controller to anticipate and smoothly execute complex maneuvers like three-point turns. The MPC formulation also incorporates soft constraints on acceleration and jerk to ensure passenger comfort during parking operations.
-
-One of the key challenges addressed in the control system was handling the dynamic nature of parking. As the vehicle moves closer to the spot, its perception of the spot's exact location improves, leading to varying target positions. Rather than regenerating the entire path each time the target position updates, we implemented a blend function that smoothly interpolates between the previous and newly detected goal positions:
-
-$$ goal_{new} = \alpha \cdot goal_{detected} + (1-\alpha) \cdot goal_{previous} $$
-
-This blending approach allows the controller to gracefully handle updates to the target position while maintaining smooth and stable vehicle motion throughout the parking maneuver.
-
-The video below illustrates how the controller adjusts the path in real-time to maintain smooth motion while following the planned trajectory as closely as possible, while also handling the dynamic nature of the target position, simulated in this case by a sine function randomly changing the target position.
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/rcOIEILTj5I" frameborder="1" allowfullscreen></iframe>
-<br>
+The control system utilizes Model Predictive Control (MPC), which works by optimizing system inputs over a prediction horizon while respecting system constraints. In this case, the controller optimizes steering angle and acceleration commands to ensure that the vehicle stays within its defined path. The prediction horizon was set to 2 seconds, divided into 20 timesteps, allowing the controller to anticipate and smoothly execute complex maneuvers like three-point turns. Additionally, the MPC incorporates soft constraints on acceleration and jerk to ensure passenger comfort during parking operations.
 
 The MPC controller takes the planned path and optimizes the vehicle's movements by minimizing a cost function:
 
@@ -68,6 +58,17 @@ This mathematical expression essentially balances two goals:
 2. Making smooth, comfortable movements
 
 The controller continuously outputs steering angles and velocity adjustments, similar to how a human driver would constantly adjust the steering wheel and pedals while parking.
+
+One of the key challenges addressed in the control system was handling the dynamic nature of parking. As the vehicle moves closer to the spot, its perception of the spot's exact location improves, leading to varying target positions. Rather than regenerating the entire path each time the target position updates, a linear blend function was implemented to smoothly interpolate between the previous and newly detected goal positions:
+
+$$ goal_{new} = \alpha \cdot goal_{detected} + (1-\alpha) \cdot goal_{previous} $$
+
+This blending approach allows the controller to gracefully handle updates to the target position without computing a new path every time, granted that the new target position is within a thresholded distance from the previously calculated spot.
+
+The video below illustrates how the blend function adjusts the path in real-time to maintain smooth motion while the MPC follows the planned trajectory as closely as possible, in order to handle the dynamic nature of the target position, simulated in this case by a sine function randomly changing the target position.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rcOIEILTj5I" frameborder="1" allowfullscreen></iframe>
+<br>
 
 ### Perception Module
 
@@ -82,8 +83,8 @@ To begin with, a YOLOv8 model was trained to detect parking spots in real-time v
   Carefully labeling empty parking spots using tools like Makesense.ai and Roboflow to generate label files containing bounding box annotations in (x, y, w, h, r) format, where (x,y) represents the center coordinates, (w,h) the dimensions, and r the rotation angle of each box
 3. Training :
   The model was trained with the following dataset split:
-  - Training set: 95%
-  - Validation set: 4% 
+  - Training set: 94%
+  - Validation set: 4%
   - Test set: 2%
 
   The YOLOv8 OBB model was trained with various hyperparameters:
@@ -100,7 +101,7 @@ To begin with, a YOLOv8 model was trained to detect parking spots in real-time v
 
 The bounding boxes detected by YOLOv8 were used to crop relevant regions from the camera feed for detailed analysis. This cropping step helped focus processing on just the potential parking spots while reducing computational overhead.
 
-For each cropped region, we applied the following filtering pipeline:
+For each cropped region, the following filtering pipeline was applied :
 
 1. Gradient filtering to enhance line features:
    - Applied Sobel operators in both x and y directions
@@ -126,13 +127,9 @@ This filtered output, consisting of the reference point coordinates $(x, y)$ and
 
 <center><img src="/img/filtering.png" alt="Filtering Pipeline" width="700"></center>
 <br>
-The image above shows the stages of the filtering pipeline, from the raw image, (a), to the thresholded binary image , (b), to the final filtered output, (c).
+The image above shows the stages of the filtering pipeline, where (a) is the raw image from the camera, (b) is the thresholded binary image and (c) being the final filtered output with the middle line annotated.
 
 ### Frame transformation and module integration
-
-Finally, the different modules were integrated together after testing them separately.
-
-#### Transformation
 
 Once a parking spot is detected, the perception module's output is transformed from camera coordinates to real-world Cartesian coordinates through an iterative calibration process. The mapping between pixel coordinates $(x_p, y_p)$ on the image plane and their corresponding 3D world coordinates $(x_c, y_c, z_c)$ was established through a series of successive refinements:
 
@@ -148,28 +145,28 @@ $$ \begin{bmatrix} x_c \\ y_c \\ z_c \\ 1 \end{bmatrix} = T_{ext} \cdot K^{-1} \
 
 where $K$ represents the optimized intrinsic camera matrix and $T_ext$ is the refined extrinsic transformation matrix. Through this meticulously calibrated system, detected parking spot boundaries are projected from image space to the vehicle's reference frame with projection errors consistently maintained below 0.5 ft.
 
-#### Blend function
-
-One of the most challenging problems was handling the dynamic nature of parking. As the vehicle moves closer to the spot, its perception of the spot's exact location improves, and thus the output value is different. A blend function was implemented to solve this problem by smoothly updating the target position without regenerating a path from scratch.
-
-$$ goal_{new} = \alpha \cdot goal_{detected} + (1-\alpha) \cdot goal_{previous} $$
+Finally, the data transfer between the various modules was smoothened out for maximum compatibility.
 
 ### Results
 
 After extensive testing, validating and reconfiguring, our system achieved:
 - Consistent parking completion in about 25 seconds
-- Position accuracy within 1 ft of the ideal spot
+- Positional accuracy within 1 ft of the ideal spot
 - Orientation accuracy within 20 degrees
 - 84% success rate across 50 different trials
 
 ### Conclusion
 
+<<<<<<< HEAD
 This project demonstrates the successful development of an autonomous parking system that integrates perception, planning and control modules. The perception pipeline uses computer vision and deep learning techniques to detect parking spots from a camera feed, transforming the detected boundaries from image coordinates to real-world coordinates through careful camera calibration. The planning module employs Hybrid A* to generate kinematically feasible paths while avoiding perceived obstacles, with the added capability to smoothly update paths as perception improves during parking. The control system uses Model Predictive Control (MPC) to track these paths and generate steering and velocity commands while respecting the vehicle's dynamics and constraints.
 
 The system achieved an 84% success rate across 50 trials, with consistent parking completion in about 25 seconds and position accuracy within 1 ft. While these results validate the effectiveness of the` integrated approach, there remain opportunities for improvement through techniques like particle filtering for better state estimation and uncertainty-aware planning for more robust performance. The project highlights how modern robotics techniques can be effectively combined to solve real-world autonomous driving challenges, while also revealing the complexities involved in handling dynamic scenarios where perception and planning must work together seamlessly.
+=======
+This project demonstrates the successful integration of several modern robotics techniques for the implementation of a autonomous parking system. The combination of Hybrid A* planning, MPC control, and deep learning-based perception creates a robust system capable of handling real-world parking scenarios.
+>>>>>>> ac7fff090503783ff0b1a197aa79e2c81e1e9e46
 
 Future improvements could include:
-1. Implementation of particle filters for more robust state estimation
+1. Implementation of multi-sensor fusion for more robust state estimation
 2. Integration of uncertainty-aware planning
 3. Extension to more complex parking scenarios
 
