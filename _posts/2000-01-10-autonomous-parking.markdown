@@ -157,13 +157,7 @@ After extensive testing, validating and reconfiguring, our system achieved:
 
 ### Conclusion
 
-<<<<<<< HEAD
 This project demonstrates the successful development of an autonomous parking system that integrates perception, planning and control modules. The perception pipeline uses computer vision and deep learning techniques to detect parking spots from a camera feed, transforming the detected boundaries from image coordinates to real-world coordinates through careful camera calibration. The planning module employs Hybrid A* to generate kinematically feasible paths while avoiding perceived obstacles, with the added capability to smoothly update paths as perception improves during parking. The control system uses Model Predictive Control (MPC) to track these paths and generate steering and velocity commands while respecting the vehicle's dynamics and constraints.
-
-The system achieved an 84% success rate across 50 trials, with consistent parking completion in about 25 seconds and position accuracy within 1 ft. While these results validate the effectiveness of the` integrated approach, there remain opportunities for improvement through techniques like particle filtering for better state estimation and uncertainty-aware planning for more robust performance. The project highlights how modern robotics techniques can be effectively combined to solve real-world autonomous driving challenges, while also revealing the complexities involved in handling dynamic scenarios where perception and planning must work together seamlessly.
-=======
-This project demonstrates the successful integration of several modern robotics techniques for the implementation of a autonomous parking system. The combination of Hybrid A* planning, MPC control, and deep learning-based perception creates a robust system capable of handling real-world parking scenarios.
->>>>>>> ac7fff090503783ff0b1a197aa79e2c81e1e9e46
 
 Future improvements could include:
 1. Implementation of multi-sensor fusion for more robust state estimation
