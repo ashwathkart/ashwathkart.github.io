@@ -2,7 +2,7 @@
 layout: post
 title:  SLAM in ROS-Gazebo
 permalink: /gazebo-slam/
-date:   2000-01-05
+date:   2000-01-04
 image:  slam.png
 tags:   [SLAM]
 ---
