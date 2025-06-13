@@ -3,7 +3,7 @@ layout: post
 title:  IsaacSim Scene Generation using LLM
 permalink: /text2isaacsim/
 date:   2000-01-12
-image:  isaacsim.png
+image:  isaacsim.jpeg
 tags:   [LLM, IsaacSim, Warehouse]
 ---
 ## Development of a LLM-based scene generation pipeline for IsaacSim
