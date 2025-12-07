@@ -5,17 +5,17 @@ image: profile_pic.jpg
 permalink: /about/
 ---
 
-<center><img src="/img/profile_pic_2.jpg" alt="profile_pic" height="400" width="400"></center>
+<center><img src="/img/img.jpg" alt="profile_pic" width="400"></center>
 <br> 
 
 #### Hey there! I'm Ashwath Karthikeyan.
 
-I hold a Master's degree in Robotics from UIUC, with expertise in motion planning, control systems, robot navigation, and vision techniques. My skills have been developed through coursework, academic projects, international collegiate robotics competitions, and a Robotics Systems Data Analysis Co-Op at UPS, a global leader in the logistics industry. This combination of theoretical knowledge and hands-on experience, along with a deep passion for robotics, fuels my drive to contribute to innovative projects in the field.
+I hold a Master's degree in Robotics from UIUC, with expertise in motion planning, control systems, robot navigation, and vision techniques. My skills have been developed through coursework, academic projects, international collegiate robotics competitions, and a Warehouse Automation Co-Op at UPS, a global leader in the logistics industry. This combination of theoretical knowledge and hands-on experience, along with a deep passion for robotics, fuels my drive to contribute to innovative projects in the field.
 
-My academic projects have allowed me to experiment with and understand the complexities of robots, ranging from warehouse robots to autonomous vehicles, mobile robots, as well as the kinematics and dynamics of legged robots and manipulators. I'm also familiar with Agile and Scrum methodologies and have used Kanban boards to keep projects on track, blending organizational skills with technical know-how.
+My academic projects have allowed me to experiment with and understand the complexities of robots, ranging from warehouse robots to autonomous vehicles, mobile robots, as well as the kinematics and dynamics of legged robots and manipulators. Through my work with warehouse robots at UPS, I gained practical insight into the multi-layered architecture required for large-scale robotics systems—from task-level logic and fleet coordination to robot-specific decision-making and control. I'm also familiar with Agile and Scrum methodologies and have used Kanban boards to keep projects on track, blending organizational skills with technical know-how.
 
 To me, robotics transcends being a figment of science fiction. It is real technology already being deployed across industries, though not yet at its full potential; it represents a powerful tool for addressing real-world challenges, undertaking repetitive or hazardous tasks and employing human intellect and creativity for more complex and innovative endeavors.
 
-As I enter this amazing field full of potential and promise, I’m looking for opportunities to apply my technical skills in robotics and contribute to a team that’s passionate about innovation and impact. As someone at the beginning of their career, I bring fresh ideas, boundless energy, and a readiness to dive into any project where I can learn, contribute, and help create something amazing.
+As I enter this amazing field full of potential and promise, I'm looking for opportunities to apply my technical skills in robotics and contribute to a team that's passionate about innovation and impact. As someone at the beginning of their career, I bring fresh ideas, boundless energy, and a readiness to dive into any project where I can learn, contribute, and help create something amazing.
 
 I welcome you to connect with me on [LinkedIn](https://www.linkedin.com/in/ashwath-karthikeyan/) or via [email](mailto:ashwath.karthikeyan@gmail.com) for opportunities or to explore my projects on [Github](https://github.com/ashwathkart). For a detailed account of my skills and experiences, please review my [resume](../misc/ashwath_resume.pdf).
