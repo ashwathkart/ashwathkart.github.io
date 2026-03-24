@@ -249,6 +249,12 @@
 }
 
 @media only screen and (min-width: 768px) {
+  .sidebar {
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+  }
+
   .recent-posts {
     .recent-header {
       margin-bottom: 5px;

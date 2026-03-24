@@ -130,4 +130,23 @@ $(function() {
       .animate({ scrollTop: 0 }, "slow", "swing");
   });
 
+  /* =======================
+  // Homepage Contact Position
+  ======================= */
+  var $body = $("body"),
+      $homeTopContact = $(".home-top-contact"),
+      $sidebarContact = $(".widget-social-sidebar");
+
+  if ($homeTopContact.length && $sidebarContact.length) {
+    var toggleHomeContactPosition = function () {
+      var isDesktop = window.matchMedia("(min-width: 768px)").matches,
+          isAtTop = $(window).scrollTop() <= 10;
+
+      $body.toggleClass("home-contact-at-top", isDesktop && isAtTop);
+    };
+
+    $(window).on("scroll resize", toggleHomeContactPosition);
+    toggleHomeContactPosition();
+  }
+
 });

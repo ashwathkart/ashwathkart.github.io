@@ -377,6 +377,10 @@
   opacity: 1;
 }
 
+.home-top-contact {
+  display: none;
+}
+
 
 
 // Media
@@ -416,6 +420,30 @@
   .article-first {
     .article-content-first {
       padding: 60px 40px 0;
+    }
+  }
+
+  .home-top-contact {
+    position: fixed;
+    top: 110px;
+    right: max(15px, calc((100vw - 1200px) / 2 + 15px));
+    width: calc(33.3333% - 30px);
+    max-width: 380px;
+    min-width: 240px;
+    z-index: 5;
+    display: none;
+    .widget {
+      margin-bottom: 0;
+    }
+  }
+
+  body.home-contact-at-top {
+    .home-top-contact {
+      display: block;
+    }
+
+    .widget-social-sidebar {
+      display: none;
     }
   }
 }
