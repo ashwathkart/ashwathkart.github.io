@@ -192,7 +192,7 @@
     position: relative;
     display: flex;
     align-items: center;
-    height: 400px;
+    height: 280px;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -205,7 +205,7 @@
     }
   }
   .article-content-first {
-    padding: 20px;
+    padding: 15px 20px;
     color: $text;
     .article-tag {
       .tag {
@@ -219,9 +219,9 @@
       }
     }
     .article-title {
-      margin-bottom: 20px;
-      font-size: 30px;
-      line-height: 30px;
+      margin-bottom: 12px;
+      font-size: 28px;
+      line-height: 28px;
       font-weight: normal;
       a {
         color: $text;
@@ -230,9 +230,9 @@
     }
     .article-excerpt {
       max-width: 450px;
-      margin-bottom: 20px;
-      font-size: 20px;
-      line-height: 23px;
+      margin-bottom: 15px;
+      font-size: 18px;
+      line-height: 21px;
     }
     .button {
       font-size: 14px;
@@ -419,7 +419,11 @@
 @media only screen and (min-width: 768px) {
   .article-first {
     .article-content-first {
-      padding: 60px 40px 0;
+      padding: 40px 40px 0;
+    }
+    .article-title {
+      font-size: 40px;
+      line-height: 40px;
     }
   }
 
@@ -434,6 +438,17 @@
     display: none;
     .widget {
       margin-bottom: 0;
+      padding: 45px 18px;
+      .widget-title {
+        font-size: 24px;
+        margin-bottom: 25px;
+      }
+      .social-profiles-link {
+        padding: 10px 12px;
+        i {
+          font-size: 40px;
+        }
+      }
     }
   }
 
