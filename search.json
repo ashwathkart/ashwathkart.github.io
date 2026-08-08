@@ -2,13 +2,27 @@
 layout: null
 ---
 [
+  {% assign first_visible_post = true %}
   {% for post in site.posts %}
-    {
-      "title"    : "{{ post.title | escape }}",
-      "category" : "{{ post.category }}",
-      "tags"     : "{{ post.tags | array_to_sentence_string }}",
-      "url"      : "{{ site.baseurl }}{{ post.url }}",
-      "date"     : "{{ post.date }}"
-    } {% unless forloop.last %},{% endunless %}
+    {% assign is_hidden_post = false %}
+    {% if post.draft == true or post.published == false %}
+      {% assign is_hidden_post = true %}
+    {% endif %}
+    {% assign post_title_prefix = post.title | slice: 0, 1 %}
+    {% if post_title_prefix == '*' %}
+      {% assign is_hidden_post = true %}
+    {% endif %}
+
+    {% unless is_hidden_post %}
+      {% unless first_visible_post %},{% endunless %}
+      {
+        "title"    : "{{ post.title | escape }}",
+        "category" : "{{ post.category }}",
+        "tags"     : "{{ post.tags | array_to_sentence_string }}",
+        "url"      : "{{ site.baseurl }}{{ post.url }}",
+        "date"     : "{{ post.date }}"
+      }
+      {% assign first_visible_post = false %}
+    {% endunless %}
   {% endfor %}
 ]
