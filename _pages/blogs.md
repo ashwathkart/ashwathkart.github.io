@@ -3,10 +3,10 @@ layout: page
 title: Blogs
 permalink: /blogs/
 ---
-
-Below are blog entries from the `_blogs` directory.
+Here are some articles I've written as a creative outlet and also an exercise in writing about diverse topics ranging from ethics in AI to more mundane topics like optimized grocery shopping pickroutes.
 
 {% assign sorted_blogs = site.blogs | sort: "date" | reverse %}
+
 {% assign visible_blog_count = 0 %}
 {% for blog in sorted_blogs %}
   {% assign is_hidden_blog = false %}
@@ -19,7 +19,9 @@ Below are blog entries from the `_blogs` directory.
   {% endif %}
 
   {% unless is_hidden_blog %}
-### [{{ blog.title }}]({{ blog.url | prepend: site.baseurl }})
+
+### [}](})
+
 {% if blog.foreword %}
 {{ blog.foreword }}
 {% endif %}
