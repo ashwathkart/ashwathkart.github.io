@@ -1,0 +1,10 @@
+{%- comment -%}
+Sets `visible_projects`: every project that is not a draft, ordered by the
+`order:` field in its front matter (lowest first). Assigns made here are
+visible to the including page.
+{%- endcomment -%}
+{%- assign visible_projects = site.projects
+  | where_exp: "p", "p.draft != true"
+  | where_exp: "p", "p.published != false"
+  | where_exp: "p", "p.hidden != true"
+  | sort: "order" -%}

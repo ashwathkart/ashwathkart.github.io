@@ -1,0 +1,9 @@
+{%- comment -%}
+Sets `visible_blogs`: every blog that is not a draft, ordered by the `order:`
+field in its front matter (lowest first).
+{%- endcomment -%}
+{%- assign visible_blogs = site.blogs
+  | where_exp: "b", "b.draft != true"
+  | where_exp: "b", "b.published != false"
+  | where_exp: "b", "b.hidden != true"
+  | sort: "order" -%}

@@ -2,7 +2,7 @@
 layout: post
 title: Multirobot Warehouse Automation
 permalink: /multirobot/
-date:   2000-01-05
+order:  8
 image:  multirobot.gif
 tags:   [Planning]
 ---

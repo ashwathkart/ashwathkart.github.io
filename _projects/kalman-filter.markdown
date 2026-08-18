@@ -2,7 +2,7 @@
 layout: post
 title:  State Estimation using EKF
 permalink: /kalman-filter/
-date:   2000-01-09
+order:  4
 image:  ekf1.png
 tags:   [State Estimation, Control]
 ---
@@ -63,7 +63,7 @@ In EKF, the process begins with a prediction step using a predefined mathematica
 
 Then, the update step adjusts this prediction based on new sensor measurements. The relationship between the measured values and the system states is defined by a measurement model, which like the system model, can be nonlinear and needs to be linearized in the context of EKF.
 
-Both the system and measurement models are subject to uncertainties. EKF addresses this by assuming that both the process and measurement noises are Gaussian, which simplifies the computation of the Kalman gain—a factor that determines the weighting of the new measurement relative to the prediction.
+Both the system and measurement models are subject to uncertainties. EKF addresses this by assuming that both the process and measurement noises are Gaussian, which simplifies the computation of the Kalman gainâ€”a factor that determines the weighting of the new measurement relative to the prediction.
 
 ##### Building the model
 

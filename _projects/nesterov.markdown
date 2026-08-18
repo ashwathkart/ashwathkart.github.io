@@ -2,7 +2,7 @@
 layout: post
 title:  Nesterov's Accelerated Gradient Descent
 permalink: /nesterov/
-date:   2000-01-10
+order:  3
 image:  nesterov_3d.png
 tags:   [Optimization]
 ---

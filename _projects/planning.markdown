@@ -2,7 +2,7 @@
 layout: post
 title:  Planning Algorithms
 permalink: /planning-algorithms/
-date:   2000-01-03
+order:  10
 image:  dijkstra.png
 tags:   [Planning]
 ---

@@ -2,7 +2,7 @@
 layout: post
 title:  Tendon-Driven Robot Leg
 permalink: /tendon-driven/
-date:   2000-01-02
+order:  11
 image:  gait.png
 tags:   [Control, Fabrication]
 ---

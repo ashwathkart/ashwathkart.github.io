@@ -1,0 +1,12 @@
+{%- comment -%}
+Sets `tag_words`: the sorted, de-duplicated list of tags across all visible
+projects. `site.tags` only covers `_posts`, so it is built by hand here.
+{%- endcomment -%}
+{%- include visible-projects.html -%}
+{%- assign all_tags = "" | split: "" -%}
+{%- for project in visible_projects -%}
+  {%- if project.tags -%}
+    {%- assign all_tags = all_tags | concat: project.tags -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign tag_words = all_tags | uniq | sort -%}

@@ -2,7 +2,7 @@
 layout: post
 title:  IsaacSim Scene Generation using LLM
 permalink: /text2isaacsim/
-date:   2000-01-12
+order:  1
 image:  isaacsim.jpeg
 tags:   [LLM, IsaacSim, Warehouse]
 ---

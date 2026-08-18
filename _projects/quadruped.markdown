@@ -2,7 +2,7 @@
 layout: post
 title:  Quadruped Robot
 permalink: /quadruped-robot/
-date:   2000-01-01
+order:  12
 image:  quadruped.png
 tags:   [Control, Planning, Perception, SLAM]
 ---

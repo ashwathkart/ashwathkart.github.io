@@ -2,7 +2,7 @@
 layout: page
 title: "Sample Blog: How to Structure Entries"
 permalink: /blogs/sample-blog/
-date: 2026-08-08
+order: 1
 foreword: "A quick example blog showing front matter fields, headings, and body structure."
 published: true
 draft: false
@@ -18,7 +18,12 @@ If you want to push work-in-progress but keep it out of the site:
 
 - Set `published: false` (best option: it is not generated at all).
 - Or set `draft: true` (also treated as hidden by list pages in this site).
-- You can also prefix a title with `*` to hide it from lists/search while drafting.
+- Or set `hidden: true`, which does the same.
+
+## Ordering
+
+Entries are ordered by the `order:` number, lowest first. There are no dates
+anywhere — rename or reorder files freely, only `order:` matters.
 
 ## Suggested front matter
 
@@ -29,7 +34,7 @@ Use this at the top of each blog file:
 layout: page
 title: "Your Blog Title"
 permalink: /blogs/your-blog-slug/
-date: YYYY-MM-DD
+order: 1
 foreword: "A one-line preview shown on /blogs/."
 published: true
 draft: false
