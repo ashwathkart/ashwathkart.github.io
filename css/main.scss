@@ -1,3 +1,7 @@
+---
+# Front matter required so Jekyll compiles this to /css/main.css.
+---
+
 // 0-SETTINGS
 @import '0-settings/global';
 @import '0-settings/colors';
@@ -17,7 +21,6 @@
 @import '3-modules/loader';
 @import '3-modules/buttons';
 @import '3-modules/sidebar';
-@import '3-modules/pagination';
 @import '3-modules/footer';
 
 // 4-LAYOUTS

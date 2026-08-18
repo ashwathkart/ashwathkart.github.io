@@ -3,7 +3,7 @@ layout: post
 title:  Tendon-Driven Robot Leg
 permalink: /tendon-driven/
 order:  11
-image:  gait.png
+image:  gait.jpg
 tags:   [Control, Fabrication]
 ---
 ## Development of a Tendon-Driven Robot Leg Displaying Gait Motion

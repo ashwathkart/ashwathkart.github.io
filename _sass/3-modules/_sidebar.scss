@@ -128,47 +128,6 @@
   }
 }
 
-// Instagram Widget
-.widget-instagram {
-  .instagram-box {
-    text-align: center;
-    .instagram-grid {
-      margin-bottom: 30px;
-    }
-    .instagram-item {
-      width: 33.333%;
-      padding: 3px;
-      float: left;
-      overflow: hidden;
-      a {
-        position: relative;
-        display: block;
-        &:after {
-          content: "";
-          position: absolute;
-          top: 0;
-          display: block;
-          height: 100%;
-          width: 100%;
-          background: rgba($blue-darken, .3);
-          transition: $global-transition;
-        }
-        &:hover {
-          &:after {
-            background: transparent;
-          }
-        }
-      }
-    }
-    .instagram-prof {
-      font-size: 14px;
-      color: #3E4250;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-}
 
 // Newsletter Widget
 .widget-newsletter {

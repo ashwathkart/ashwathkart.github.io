@@ -3,7 +3,7 @@ layout: post
 title: Package Detection and Barcode Scanning
 permalink: /drone/
 order:  7
-image:  camera_drone.png
+image:  camera_drone.jpg
 tags:   [Drone, Perception, Control]
 ---
 ## Package Detection and Barcode Scanning with an Autonomous Drone
