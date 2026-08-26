@@ -1,0 +1,157 @@
+:root {
+  color-scheme: dark;
+  --bg: #14161a;
+  --panel: #1d2027;
+  --line: #2e333d;
+  --text: #e6e8ec;
+  --muted: #8b93a1;
+  --accent: #4da3ff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 16px;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 "Segoe UI", system-ui, sans-serif;
+}
+
+header {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+h2 {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 0 0 8px;
+}
+
+#stats {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+#stats span { color: var(--text); }
+
+#canvas-wrap {
+  overflow-x: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px;
+}
+
+canvas { display: block; }
+
+#fleet {
+  margin-top: 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 12px;
+}
+
+#robot-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+#robot-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  background: #23262e;
+}
+
+#robot-list li.idle { color: var(--muted); }
+
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.name { font-weight: 600; width: 1.4em; }
+
+/* --- Replay controls, the one thing the live viewer has no need for ------ */
+
+#controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+#controls button {
+  font: inherit;
+  color: var(--text);
+  background: #2b303a;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+#controls button:hover { border-color: var(--accent); }
+
+#controls button.active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+#play { min-width: 5.5em; }
+
+#scrub {
+  flex: 1 1 220px;
+  min-width: 160px;
+  accent-color: var(--accent);
+}
+
+#frame-label {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 8em;
+}
+
+.speeds { display: flex; gap: 4px; }
+
+footer {
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+footer a { color: var(--accent); }
+
+#loading {
+  color: var(--muted);
+  padding: 40px 0;
+}

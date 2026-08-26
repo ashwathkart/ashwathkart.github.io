@@ -1,0 +1,63 @@
+---
+layout: null
+permalink: /demos/multirobot/
+sitemap: false
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Multi-Robot Warehouse &mdash; recorded run</title>
+  <link rel="stylesheet" href="player.css">
+</head>
+<body>
+  <header>
+    <h1>Multi-Robot Warehouse</h1>
+    <div id="stats">loading&hellip;</div>
+  </header>
+
+  <div id="loading">Loading the recorded run&hellip;</div>
+
+  <div id="canvas-wrap">
+    <canvas id="grid"></canvas>
+  </div>
+
+  <div id="controls">
+    <button id="play" type="button">Pause</button>
+    <button id="restart" type="button">Restart</button>
+    <label for="scrub" class="screen-reader-text" hidden>Frame</label>
+    <input id="scrub" type="range" min="0" max="0" value="0" step="1">
+    <span id="frame-label"></span>
+    <span class="speeds">
+      <button type="button" data-speed="1" class="active">1&times;</button>
+      <button type="button" data-speed="2">2&times;</button>
+      <button type="button" data-speed="4">4&times;</button>
+    </span>
+  </div>
+
+  <section id="fleet">
+    <h2>Fleet</h2>
+    <ul id="robot-list"></ul>
+  </section>
+
+  <footer>
+    <p id="caption"></p>
+    <p>
+      Blue cells on the top and bottom rails are pickup ports, amber are dropoff.
+      Filled circles are robots carrying a task, hollow ones are parked. Red cells
+      are dynamic obstacles. Space toggles play, arrow keys step frame by frame.
+    </p>
+    <p>
+      This is a run of
+      <a href="https://github.com/ashwathkart/multirobot-warehouse">the simulator</a>
+      recorded with <code>main.py --record</code> and replayed here, since GitHub
+      Pages cannot run the Python. Back to
+      <a href="/multirobot/">the write-up</a>.
+    </p>
+  </footer>
+
+  <script src="player.js"></script>
+</body>
+</html>
