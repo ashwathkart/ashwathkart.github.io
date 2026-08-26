@@ -4,10 +4,9 @@ title: "Sample Blog: How to Structure Entries"
 permalink: /blogs/sample-blog/
 order: 1
 foreword: "A quick example blog showing front matter fields, headings, and body structure."
-published: true
-draft: false
+published: false
+draft: true
 ---
-
 ## Foreword
 
 This sample entry demonstrates the recommended format for any file in `_blogs/`.
