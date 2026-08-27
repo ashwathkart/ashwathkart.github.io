@@ -2,7 +2,7 @@
 layout: post
 title:  SLAM in ROS-Gazebo
 permalink: /gazebo-slam/
-order:  9
+order:  8
 image:  slam.png
 tags:   [SLAM]
 ---

@@ -2,7 +2,7 @@
 layout: post
 title:  Lane Adherence of an Autonomous Car
 permalink: /lane-fit/
-order:  5
+order:  10
 image:  lane_fit.png
 tags:   [Autonomous Vehicles, Planning, Perception, Control]
 ---

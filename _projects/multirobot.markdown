@@ -2,7 +2,7 @@
 layout: post
 title: Multirobot Warehouse Automation
 permalink: /multirobot/
-order:  8
+order:  2
 image:  multirobot.gif
 tags:   [Planning]
 ---
@@ -26,9 +26,9 @@ pause it, scrub through it, and watch a specific standoff resolve frame by frame
 
 ### The floor
 
-The warehouse is a 60×12 open grid with no interior walls. Conveyor belts run the
+The robot floor is a 60×12 open grid with no interior walls. Conveyor belts run the
 length of both long edges, *outside* the grid, and robots can never drive onto them.
-Each belt carries eight ports — pickup (blue) and dropoff (amber) — and a task targets
+Each belt carries eight ports - pickup (blue) and dropoff (amber) - and a task targets
 the floor cell directly in front of a port, where the robot parks and hands its load
 across.
 
@@ -47,7 +47,7 @@ D-------D-------S-------S     <- bottom belt (y == -1)
 Deliberately leaving the floor open matters. With walls, congestion is the map's
 fault and you can tune it away by widening a corridor. On an empty floor, every
 traffic jam the robots create is one they created themselves, which is the behaviour
-worth studying.
+we want to study and optimize.
 
 ### Dispatching work
 
@@ -56,10 +56,10 @@ frees up, the next task goes to the idle robot with the lowest
 `robot → source → destination` Manhattan cost. Ties break on the lowest robot id,
 which keeps runs reproducible.
 
-A task has two legs. The robot drives to the pickup, the FMS flips its phase, and it
+A task has two legs. First the robot drives to the pickup and then the FMS flips its phase, and then it
 drives on to the dropoff before returning to the idle pool. Only ten tasks run at
-once by default; the other robots stay parked — but a parked robot is still very much
-in the way, which turns out to be most of the difficulty.
+once by default (these parameters are arguments that can be passed on the command line); the other robots stay parked — 
+but a parked robot is still very much in the way, which turns out to be most of the difficulty.
 
 ### Planning
 
@@ -105,16 +105,6 @@ the robot that was about to follow it — so cancellation iterates to a fixed po
 It terminates because moves only ever flip from on to off, never back. When robots
 contend for a cell, a robot already standing on it keeps it; otherwise the lowest id
 wins and the losers simply retry next tick.
-
-#### A note on what this replaced
-
-An earlier version of this project used a 2×2 "exchange maneuver" to swap robots past
-each other, and I claimed it reduced deadlocks. It did not. It *was* a swap collision
-with extra steps — the two robots passed through one another and the visualisation was
-too coarse to show it. The current resolver bans that case by name. Writing down the
-two rules explicitly, and being honest that following and rotating are not violations,
-did more for throughput than any of the heuristics layered on top of the broken
-version.
 
 ### Parked robots and the yield cascade
 
@@ -175,12 +165,12 @@ so it is academic here; it would not be on a floor ten times larger replanned ev
 tick.
 
 The unexpected one: **turning obstacles off makes the fleet slower.** 273 ticks
-instead of 251. My reading is that the direct route between two ports is the same lane
+instead of 251. My understanding is that the direct route between two ports is the same lane
 for every robot, so an unobstructed floor funnels the whole fleet into it and they
 spend their time yielding to each other. Obstacles scatter robots onto parallel lanes
-and break up the queue. I would not have predicted this, and it suggests the
+and break up the queue. I could not have predicted this, and it suggests the
 one-step-lookahead resolver is leaving real throughput on the table — a planner with
-some notion of congestion ought to capture that spreading deliberately, rather than
+some notion of congestion must capture that spreading deliberately, rather than
 getting it by accident.
 
 Worth noting: with obstacles off the runs are identical across all five seeds, which is
@@ -190,7 +180,7 @@ planner sees, since different routes consume those draws differently — so the 
 planners are not solving quite the same instance on a given seed. These are five-seed
 averages, not a controlled A/B.
 
-### What I would do next
+### Future Work
 
 - **Incremental replanning.** A full A\* per robot per tick is the obvious waste.
   D\*-Lite or LPA\* would reuse the previous search tree instead of discarding it.

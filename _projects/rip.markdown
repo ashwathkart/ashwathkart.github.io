@@ -2,7 +2,7 @@
 layout: post
 title:  Rotary Inverted Pendulum
 permalink: /rip/
-order:  6
+order:  7
 image:  pid_small.gif
 tags:   [Control]
 ---

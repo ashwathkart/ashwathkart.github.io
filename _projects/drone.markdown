@@ -2,7 +2,7 @@
 layout: post
 title: Package Detection and Barcode Scanning
 permalink: /drone/
-order:  7
+order:  6
 image:  camera_drone.jpg
 tags:   [Drone, Perception, Control]
 ---

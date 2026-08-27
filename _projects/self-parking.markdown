@@ -2,7 +2,7 @@
 layout: post
 title:  Autonomous Parking in a Self-Driving Car
 permalink: /self-parking/
-order:  2
+order:  3
 image:  parking.jpg
 tags:   [Autonomous Vehicles, Perception, Planning, Control]
 ---
